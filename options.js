@@ -16,5 +16,15 @@ module.exports = {
                 [{text: 'Играть еще раз', callback_data: '/again'}],
             ]
         })
+    },
+
+
+
+    contactMeOptions: {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{text: 'Играть еще раз', callback_data: '/again'}],
+            ]
+        })
     }
 }

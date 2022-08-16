@@ -1,14 +1,14 @@
-const TelegramApi = require('node-telegram-bot-api')
-const {gameOptions, againOptions} = require('./options')
+const TelegramApi = require('node-telegram-bot-api');
+const {gameOptions, againOptions} = require('./options');
 // const sequelize = require('./db');
 // const UserModel = require('./models');
 
 
-const token = '5586594835:AAF9t4Q7KlUjyVb6BDQapPcFaYidZHERAfs'
+const token = '5586594835:AAF9t4Q7KlUjyVb6BDQapPcFaYidZHERAfs';
 
-const bot = new TelegramApi(token, {polling: true})
+const bot = new TelegramApi(token, {polling: true});
 
-const chats = {}
+const chats = {};
 
 
 const startGame = async (chatId) => {
@@ -16,7 +16,7 @@ const startGame = async (chatId) => {
     const randomNumber = Math.floor(Math.random() * 10)
     chats[chatId] = randomNumber;
     await bot.sendMessage(chatId, 'Отгадывай', gameOptions);
-}
+};
 
 
 const start = async () => {
@@ -30,29 +30,50 @@ const start = async () => {
 
     bot.setMyCommands([
         {command: '/start', description: 'Начальное приветствие'},
-        {command: '/info', description: 'Получить информацию о пользователе'},
+        {command: '/contactme', description: 'Моя контактная информация'},
+        {command: '/aboutyou', description: 'Информация о тебе'},
         {command: '/game', description: 'Игра угадай цифру'},
-    ])
+
+    ]);
 
     bot.on('message', async msg => {
+
+        // console.log(msg)
+
         const text = msg.text;
         const chatId = msg.chat.id;
 
         try {
             if (text === '/start') {
                 // await UserModel.create({chatId})
-                await bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/ea5/382/ea53826d-c192-376a-b766-e5abc535f1c9/7.webp')
-                return bot.sendMessage(chatId, `Добро пожаловать в мой тестовый телеграм бот`);
+                await bot.sendSticker(chatId, 'https://chpic.su/_data/stickers/e/EatPrayCode/EatPrayCode_001.webp');
+                await bot.sendMessage(chatId, 'Добро пожаловать в мой телеграм бот!');
+                return bot.sendMessage(chatId, `Я начинающий фронтенд разработчик!`);
             }
-            if (text === '/info') {
+
+            if (text === '/contactme') {
+                // await UserModel.create({chatId})
+                await bot.sendMessage(chatId, 'Моя контактная информация:');
+                return bot.sendMessage(chatId, `
+<a href="mailto:ru55nedug@gmail.com">ru55nedug@gmail.com</a>
+<a href="https://t.me/polkaj">Telegram</a>
+<a href="https://www.linkedin.com/in/alexander-rusin-789760226">LinkedIn</a>
+<a href="https://github.com/nedug/">GitHub</a>
+`, {disable_web_page_preview: true, parse_mode: 'HTML'});
+            }
+
+            if (text === '/aboutyou') {
                 // const user = await UserModel.findOne({chatId})
-                return bot.sendMessage(chatId, `Тебя зовут ${msg.from.first_name} ${msg.from.last_name}!`);
+                return bot.sendMessage(chatId, `Тебя зовут ${msg.from.first_name} ${msg.from.username}!`);
                 // return bot.sendMessage(chatId, `Тебя зовут ${msg.from.first_name} ${msg.from.last_name}, в игре у тебя правильных ответов ${user.right}, неправильных ${user.wrong}`);
             }
+
             if (text === '/game') {
                 return startGame(chatId);
             }
+
             return bot.sendMessage(chatId, 'Я тебя не понимаю, попробуй еще раз!)');
+
         } catch (e) {
             return bot.sendMessage(chatId, 'Произошла какая то ошибочка!)');
         }
@@ -75,6 +96,7 @@ const start = async () => {
         }
         // await user.save();
     })
-}
+};
 
-start()
+
+start();
