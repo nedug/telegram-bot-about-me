@@ -23,7 +23,8 @@ module.exports = {
     contactMeOptions: {
         reply_markup: JSON.stringify({
             inline_keyboard: [
-                [{text: 'Играть еще раз', callback_data: '/again'}],
+                [{text: 'Email', callback_data: '/email'}, {text: 'Telegram', callback_data: '/telegram'}],
+                [{text: 'LinkedIn', callback_data: '/linkedin'}, {text: 'GitHub', callback_data: '/github'}],
             ]
         })
     }
