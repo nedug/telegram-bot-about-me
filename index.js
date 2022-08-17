@@ -116,7 +116,8 @@ Module CSS + Styled-components + Tailwind + Material UI
             return bot.sendMessage(chatId, `https://github.com/nedug`, {disable_web_page_preview: true,});
         }
         if (data === '/cv') {
-            return bot.sendMessage(chatId, `https://drive.google.com/file/d/1mD977Y3Er8u_9zgPc350KDWF6A1grWAA/view`,);
+            const CV = 'CV-Frontend-Developer.pdf';
+            return bot.sendDocument(chatId, CV);
         }
         if (data === '/portfoliocv') {
             return bot.sendMessage(chatId, `https://nedug.github.io/cv-alexander-r`,);
