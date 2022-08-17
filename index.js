@@ -1,11 +1,13 @@
 const TelegramApi = require('node-telegram-bot-api');
-const {gameOptions, againOptions, contactMeOptions} = require('./options');
+const {gameOptions, againOptions, contactMeOptions, portfolioOptions} = require('./options');
+const axios = require('axios');
 // const sequelize = require('./db');
 // const UserModel = require('./models');
 require('dotenv').config();
 
 
 const token = process.env.TG_TOKEN;
+const JOKE_API = 'https://v2.jokeapi.dev/joke/Programming?type=single';
 
 const bot = new TelegramApi(token, {polling: true});
 
@@ -31,9 +33,16 @@ const start = async () => {
 
     bot.setMyCommands([
         {command: '/start', description: 'Начальное приветствие'},
-        {command: '/contactme', description: 'Моя контактная информация'},
-        {command: '/aboutyou', description: 'Информация о тебе'},
+
+        {command: '/portfolio', description: 'Моё CV и Портфолио'},
+
+        {command: '/skills', description: 'Мои навыки разработки'},
+
+        {command: '/contacts', description: 'Моя контактная информация'},
+
         {command: '/game', description: 'Игра угадай цифру'},
+
+        {command: '/joke', description: 'Случайная шутка о программировании'},
 
     ]);
 
@@ -53,19 +62,38 @@ const start = async () => {
                 return bot.sendMessage(chatId, `Tут вы найдете информацию о моих навыках, портфолио, контактах и многое другое.`, {parse_mode: 'HTML'});
             }
 
-            if (text === '/contactme') {
-                // await UserModel.create({chatId})
-                return bot.sendMessage(chatId, 'Вы можете связаться со мной через:', contactMeOptions);
+            if (text === '/portfolio') {
+                return bot.sendMessage(chatId, 'Моё CV и Портфолио:', portfolioOptions);
             }
 
-            if (text === '/aboutyou') {
-                // const user = await UserModel.findOne({chatId})
-                return bot.sendMessage(chatId, `Тебя зовут ${msg.from.first_name} ${msg.from.username}!`);
-                // return bot.sendMessage(chatId, `Тебя зовут ${msg.from.first_name} ${msg.from.last_name}, в игре у тебя правильных ответов ${user.right}, неправильных ${user.wrong}`);
+            if (text === '/skills') {
+                return bot.sendMessage(chatId, `<b>HTML, CSS + SСSS
+JavaScript + TypeScript
+React + REDUX + REDUX Toolkit 
+NODE.js + Express + MongoDB 
+GIT + GitHub + Heroku
+Axios + REST API + Postman
+UNIT TEST (TDD, Jest) + StoryBook
+Module CSS + Styled-components + Tailwind + Material UI
+</b>`, {disable_web_page_preview: true, parse_mode: 'HTML'});
+            }
+
+            if (text === '/contacts') {
+                return bot.sendMessage(chatId, 'Вы можете связаться со мной через:', contactMeOptions);
             }
 
             if (text === '/game') {
                 return startGame(chatId);
+            }
+
+            if (text === '/joke') {
+                try {
+                    const response = await axios(JOKE_API);
+                    return bot.sendMessage(chatId, response.data.joke);
+                } catch (e) {
+                    console.log(e)
+                    return bot.sendMessage(chatId, 'Произошла какая-то ошибочка!)');
+                }
             }
 
             return bot.sendMessage(chatId, 'Я тебя не понимаю, попробуй еще раз!)');
@@ -84,17 +112,24 @@ const start = async () => {
             return startGame(chatId)
         }
         if (data === '/email') {
-            return bot.sendMessage(chatId, `ru55nedug@gmail.com`, {disable_web_page_preview: true, parse_mode: 'HTML'});
+            return bot.sendMessage(chatId, `ru55nedug@gmail.com`, {disable_web_page_preview: true,});
         }
         if (data === '/telegram') {
-            return bot.sendMessage(chatId, `https://t.me/polkaj`, {disable_web_page_preview: true, parse_mode: 'HTML'});
+            return bot.sendMessage(chatId, `https://t.me/polkaj`, {disable_web_page_preview: true,});
         }
         if (data === '/linkedin') {
-            return bot.sendMessage(chatId, `https://www.linkedin.com/in/alexander-rusin-789760226`, {disable_web_page_preview: true, parse_mode: 'HTML'});
+            return bot.sendMessage(chatId, `https://www.linkedin.com/in/alexander-rusin-789760226`, {disable_web_page_preview: true,});
         }
         if (data === '/github') {
-            return bot.sendMessage(chatId, `https://github.com/nedug`, {disable_web_page_preview: true, parse_mode: 'HTML'});
+            return bot.sendMessage(chatId, `https://github.com/nedug`, {disable_web_page_preview: true,});
         }
+        if (data === '/cv') {
+            return bot.sendMessage(chatId, `https://drive.google.com/file/d/1mD977Y3Er8u_9zgPc350KDWF6A1grWAA/view`,);
+        }
+        if (data === '/portfoliocv') {
+            return bot.sendMessage(chatId, `https://nedug.github.io/cv-alexander-r`,);
+        }
+
 
         // const user = await UserModel.findOne({chatId})
         if (data == chats[chatId]) {
@@ -110,3 +145,6 @@ const start = async () => {
 
 
 start();
+
+
+// return bot.sendMessage(chatId, `Тебя зовут ${msg.from.first_name} ${msg.from.last_name}, в игре у тебя правильных ответов ${user.right}, неправильных ${user.wrong}`);

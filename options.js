@@ -18,8 +18,6 @@ module.exports = {
         })
     },
 
-
-
     contactMeOptions: {
         reply_markup: JSON.stringify({
             inline_keyboard: [
@@ -27,5 +25,13 @@ module.exports = {
                 [{text: 'LinkedIn', callback_data: '/linkedin'}, {text: 'GitHub', callback_data: '/github'}],
             ]
         })
-    }
+    },
+
+    portfolioOptions: {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{text: 'CV', callback_data: '/cv'}, {text: 'Portfolio', callback_data: '/portfoliocv'}],
+            ]
+        })
+    },
 }
