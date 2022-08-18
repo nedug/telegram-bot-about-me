@@ -125,7 +125,7 @@ Module CSS + Styled-components + Tailwind + Material UI
 
         const user = await UserModel.findOne({chatId});
 
-        if (data === chats[chatId]) {
+        if (data == chats[chatId]) {
             user.right += 1;
             await user.save();
             await bot.sendMessage(chatId, `Поздравляю, ты отгадал цифру ${chats[chatId]}`);
